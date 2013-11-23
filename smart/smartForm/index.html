@@ -11,18 +11,19 @@
  </head>
  <body>
        <form id="a">
-	        <input type="text" smart="{requird}"/>
+	        <input type="text" id="loginname" smart='{"required":true,"maxSize":15,"minSize":4}'/>
 			</br> 
-			<input type="text" smart="{requird}"/>
+			<input type="text" id="password"  smart='{"request":"loginname"}'/>
 	   </form>
 	   <input type="button" onclick="myclick()" value="测试"/>
  </body>
 </html>
 <script src="js/jquery-1.10.2.min.js" ></script>
-<script src="js/smart-1.0.1.js" charset="gb2312"></script>
-<script src="language/smartForm_CN.js" charset="gb2312"></script>
+<script src="language/smartForm_CN.js" charset="utf-8"></script>
+<script src="js/smart-1.0.1.js" charset="utf-8"></script>
 <script>
-      function myclick(){
-	   $("#a").smartForm();
-	  }
+	   
+	  $(function(){
+	       $("#a").smartForm();
+	  });
 </script>

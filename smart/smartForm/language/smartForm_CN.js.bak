@@ -1,9 +1,0 @@
-(function(){
-$.extend(exp:{
- requird:{
-   exp:"none",
-   errorMsg:"此项不允许为空!",
-   successMsg:"校验通过!",
-  }
-});
-})(jQuery);
