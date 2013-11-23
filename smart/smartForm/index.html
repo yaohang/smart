@@ -10,12 +10,19 @@
   <link rel="stylesheet" type="text/css" href="css/smart.css" />
  </head>
  <body>
-       <form id="a">
-	        <input type="text" id="loginname" smart='{"required":true,"maxSize":15,"minSize":4}'/>
-			</br> 
-			<input type="text" id="password"  smart='{"request":"loginname"}'/>
-	   </form>
-	   <input type="button" onclick="myclick()" value="测试"/>
+       <div >
+	           <form id="a">
+		       用户账号<input type="text" id="loginname" smart='{"required":true,"maxSize":15,"minSize":4}'/>
+				</br> 
+				用户密码<input type="text" id="password"  smart='{"required":true,"maxSize":15,"minSize":4}'/>
+				</br>
+				确认密码<input type="text" id="password1"  smart='{"request":"password"}'/>
+				</br>  
+				用户邮箱<input type="text" id="email"     smart='{"customer":"email"}'/>
+		   </form>
+		   <input type="button" onclick="myclick()" value="测试"/>
+       </div>
+       
  </body>
 </html>
 <script src="js/jquery-1.10.2.min.js" ></script>

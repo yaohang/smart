@@ -156,7 +156,11 @@
 			 	}
 			 	//组合
 			 	if(typeof(smart.custmoer)=="string"){
-			 		
+			 		var reg=$.exp[smart.customer].exp;
+			 		if(reg.test(value)==false){
+			 			$_span.html($.exp[smart.customer].errorMsg);
+			 			options.result=false;
+			 		}
 			 	}
 		 
 		 if(!options.result){

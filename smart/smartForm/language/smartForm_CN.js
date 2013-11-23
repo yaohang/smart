@@ -18,6 +18,10 @@ $.extend({exp:{
 	 },
 	 request:{
 	 	errorMsg:"两次密码不一致!"
+	 },
+	 email:{
+	 	exp:"/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/",
+	 	successMsg:"邮箱格式不正确!"
 	 }
 }});
 })(jQuery);
