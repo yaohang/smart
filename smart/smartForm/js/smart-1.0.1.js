@@ -25,11 +25,17 @@
   });
   $.fn.extend({
   	smartForm:function (options) {
-     var $_children=this.find("input").each(function(){
+  	 var $_form=$(this);
+     var $_children=this.find("input").each(function(count){
+     	     var options=null;
      	      switch($.config.showType){
      	      	case 1:
      	      	   $(this).bind("blur",function(){
-     	      	   	  textShow(this)
+     	      	   	  options=textShow({current:this});
+     	      	   	  if(!options.result){
+     	      	   	  	//$_form.data(count,$(this).attr("id"));
+     	      	   	  	//window.console.log($_form.data(count));
+     	      	   	  }
      	      	   });
      	      	  break;
      	      	case 2:
@@ -38,7 +44,7 @@
      	      	  break;
      	      } 
 			   if($.config.showOnlyMessage&&!options.result){
-			   	return false;
+			   	 return false;
 			   }
 	 });
   }
@@ -47,8 +53,8 @@
 	 * 提示模式一，图文并茂，在元素后方追加显示
 	 * obj 当前校验的对象
 	 */
-    function textShow(obj){
-       var $_obj=$(obj);
+    function textShow(objs){
+       var $_obj=$(objs.current);
 	   var smart=$_obj.attr("smart");
 	   var type=typeof smart;
 	   var  options=null;
@@ -56,7 +62,7 @@
 	   	       var smartStatus=typeof($_obj.attr("smart-status"));
 		       var width=$_obj.width();
 			   var height=$_obj.height()+6;
-			   var this_=obj;
+			   var this_=objs.current;
 			   var left=(this_.offsetLeft+width);
 			   var top=this_.offsetTop
 			   var $_div=elementFactory($.Element.div);
@@ -74,7 +80,7 @@
 				   $_div.append($_span);
 				   $_div.attr("id","smart-"+$_obj.attr("id"));
 				   smart=$.parseJSON(smart);
-			       options=analysisSmart(obj,$_div,smart);
+			       options=analysisSmart(objs.current,$_div,smart);
 			       var $_smartElement=$("#smart-"+$_obj.attr("id"));
 			      if($.config.showAllMessage||!options.result){
 			      	  //if($.config.showOnlyMessage){
@@ -155,7 +161,7 @@
 			 		}
 			 	}
 			 	//组合
-			 	if(typeof(smart.custmoer)=="string"){
+			 	if(typeof(smart.customer)=="string"){
 			 		var reg=$.exp[smart.customer].exp;
 			 		if(reg.test(value)==false){
 			 			$_span.html($.exp[smart.customer].errorMsg);
