@@ -20,7 +20,7 @@
 				</br>  
 				用户邮箱<input type="text" id="email"     smart='{"customer":"email"}'/>
 		   </form>
-		   <input type="button" onclick="myclick()" value="测试"/>
+		   <input type="button" id="sb" value="测试"/>
        </div>
        
  </body>
@@ -31,6 +31,11 @@
 <script>
 	   
 	  $(function(){
-	       $("#a").smartForm();
+	       $("#a").smartForm({
+	       submitButton:"sb",
+	       triggerEvent:"focus",
+	       showHidden:true,
+	       showDate:3000
+	       });
 	  });
 </script>

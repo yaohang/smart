@@ -18,25 +18,35 @@
 	  	  	showOnlyMessage:false,   //false:每次只提醒一个元素的失败,true:提示所有元素
 	  	  	showAllMessage:true,     //false:只显示校验失败信息，true:校验正确和失败都显示
 	  	  	showType:1,              //错误提示模式1:为图文并茂,2:alert，3：dialog浮动
-	  	  	eventOnblur:true,        //true:在失去焦点的时候触发校验事件,false:在点击提交按钮的时候触发校验事件
+	  	  	showHidden:false,        //false:不隐藏错误信息，true:隐藏错误信息
+	  	  	showDate:10000,          //当然showHidden等于true,showType不等于2的时候该参数生效，单位毫秒
+	  	  	hiddenType:1,            //错误元素隐藏模式1：错误信息隐藏后，校验元素自动恢复长度
+	  	  	triggerEvent:"blur",     //blur:在失去焦点的时候触发校验事件,focus:在聚焦的时候触发校验事件,false:在点击提交按钮的时候触发校验事件。只对text,textarea,file有效
 	  	  	ajaxSubmit:false,        //false:表单提交,function(){}ajax提交
-	  	  	inputReduction:20        //text元素缩减长度
+	  	  	inputReduction:20,       //text元素缩减长度
+	  	  	submitButton:false       //false：表示采用的是submit类型的按钮，如果是button类型的请传入id。采用ajx时候也是如此。
 	  	  }
   });
   $.fn.extend({
   	smartForm:function (options) {
+  		//修改默认参数
+  	$.extend($.config,options,$.config);
   	 var $_form=$(this);
-     var $_children=this.find("input").each(function(count){
+     var $_children=this.find("input");
+         //给制定的表单元素进行校验事件bind
+         $_children.each(function(count){
      	     var options=null;
      	      switch($.config.showType){
      	      	case 1:
-     	      	   $(this).bind("blur",function(){
-     	      	   	  options=textShow({current:this});
-     	      	   	  if(!options.result){
-     	      	   	  	//$_form.data(count,$(this).attr("id"));
-     	      	   	  	//window.console.log($_form.data(count));
-     	      	   	  }
-     	      	   });
+     	      	   if(typeof($.config.triggerEvent)!="boolean"){
+     	      	   	    $(this).bind($.config.triggerEvent,function(){
+	     	      	   	  options=textShow({current:this});
+	     	      	   	  if(!options.result){
+	     	      	   	  	//$_form.data(count,$(this).attr("id"));
+	     	      	   	  	//window.console.log($_form.data(count));
+	     	      	   	  }
+	     	      	   });
+     	      	   }
      	      	  break;
      	      	case 2:
      	      	  break;
@@ -47,6 +57,30 @@
 			   	 return false;
 			   }
 	 });
+	 //如果采用普通按钮，那么给指定的按钮binding整体校验
+	if(typeof($.config.submitButton)=="string"){
+		var $_button=$("#"+$.config.submitButton);
+		    $_button.bind("click",function(){
+		    	var options=null;
+		    	$_children.each(function(count){
+			    	switch($.config.showType){
+			     	      	case 1:
+			     	      	      options=textShow({current:this});
+			     	      	  break;
+			     	      	case 2:
+			     	      	  break;
+			     	      	case 3:
+			     	      	  break;
+			     	} 
+		    	});
+		    	if(options!=null&&options.result){
+		    		 $_form.submit();
+		    	}else{
+		    		
+		    	}
+		    });
+	}
+	 
   }
   });
   /**
@@ -94,6 +128,14 @@
 					   var $_parent=$_obj.parent();
 					       if($_smartElement.length>0){
 					       	 $_smartElement.remove();
+					       }
+					       //判断是否自动隐藏错误信息
+					       if($.config.showType!=2&&$.config.showHidden){
+					       	 options.div.stop().animate({opacity:0},$.config.showDate,function(){
+					       	 	var size=$_obj.width()+$.config.inputReduction;
+				  		        $_obj.stop().animate({width:size},500);
+				  		        $_obj.removeAttr("smart-status");
+					       	 });
 					       }
 					       $_parent.append(options.div);
 						   //给当前校验元素添加校验状态
